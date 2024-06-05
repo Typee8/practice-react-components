@@ -33,7 +33,6 @@ class Article extends React.Component {
     }
 
     addComment() {
-      //tutaj skończyłem
       const {comments} = this.state;
       const commentsList = comments.map(item => {
         return (
