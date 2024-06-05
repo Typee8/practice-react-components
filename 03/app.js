@@ -5,9 +5,45 @@ const root = createRoot(document.querySelector('#root'));
 
 class Article extends React.Component {
     state = {
+        content: '',
         comments: [],
     }
     
+    commentChange = evt => {
+      const {name, value} = evt.target;
+      this.setState({
+        [name]: value,
+      }
+      )
+    }
+
+    submitHandler = evt => {
+      evt.preventDefault();
+      const {comments, content} = this.state;
+
+      if(content === '') {
+        return;
+      }
+
+      const copyComments = comments.slice();
+      copyComments.push(content);
+
+      this.setState({comments: copyComments});
+      this.setState({content: ''});
+    }
+
+    addComment() {
+      //tutaj skończyłem
+      const {comments} = this.state;
+      const commentsList = comments.map(item => {
+        return (
+          <li>{item}</li>
+        );
+      })
+
+      return commentsList;
+    }
+
     render() {
         const {title, body} = this.props;
         return (
@@ -15,19 +51,19 @@ class Article extends React.Component {
                 <h1>{ title }</h1>
                 <p>{ body }</p>
                 <section>
-                    <form>
+                    <form onSubmit = {this.submitHandler}>
                         <div>
                             <label>
                                 <textarea 
                                     style={{ "minWidth": "300px", "minHeight": "120px" }} 
-                                    name="content" 
+                                    name="content" value = {this.state.content} onChange = {this.commentChange}
                                 />
                             </label>
                         </div>
                         <div><input type="submit" value="dodaj komentarz" /></div>
                     </form>
                     <ul>
-                        {/* tutaj komentarze jako <li/>, ps. tak wygląda komentarz do kodu w JSX */}
+                        {this.addComment()}
                     </ul>
                 </section>
             </article>
